@@ -2,5 +2,5 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/kiwibeau/public_html/
-    - /bin/cp -R build/* $DEPLOYPATH
+    - /bin/cp -R public $DEPLOYPATH
    
