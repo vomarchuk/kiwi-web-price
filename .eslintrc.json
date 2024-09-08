@@ -31,6 +31,8 @@
         "ignoreStrings": true
       }
     ],
+    "quotes": ["error", "single"], 
+    "prettier/prettier": ["error", { "singleQuote": true }],
     "react/require-default-props": "off",
     "@typescript-eslint/indent": "off",
     "import/prefer-default-export": "off",
