@@ -2,5 +2,8 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home2/kiwibeau/public_html/
-    - /bin/cp -R public $DEPLOYPATH
-   
+    - if [ ! -d "$DEPLOYPATH" ]; then mkdir -p $DEPLOYPATH; fi
+    - /bin/cp -R * $DEPLOYPATH
+    - cd $DEPLOYPATH
+    - yarn install
+    - yarn build
