@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/kiwibeau/TEST/
+    - /bin/cp -R folder $DEPLOYPATH
+    - /bin/cp file.name $DEPLOYPATH
