@@ -1,6 +1,8 @@
 'use client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React, { useState, ReactNode } from 'react'
+import { Provider } from 'react-redux'
+import { store } from './store/store'
 
 interface IQueryProvider {
   children: ReactNode
@@ -18,6 +20,8 @@ export const QueryProvider: React.FC<IQueryProvider> = ({ children }) => {
       }),
   )
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>{children}</Provider>
+    </QueryClientProvider>
   )
 }

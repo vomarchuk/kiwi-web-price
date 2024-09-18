@@ -8,9 +8,17 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {},
+      boxShadow: {
+        buttonBoxShadow: '0px 4px 4px rgba(0, 0, 0, 0.15)'
+      },
+      fontFamily: {
+        releway: ['Raleway', 'sans-serif']
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        accent: 'rgb(84 194 99)'
       },
     },
   },

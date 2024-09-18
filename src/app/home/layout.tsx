@@ -6,13 +6,13 @@ interface ViewProps {
   children: React.ReactNode
 }
 export default function HomePageLayout({ children }: ViewProps) {
-  console.log('hello')
-
   return (
     <>
       <Header />
-      <SideBar />
-      {children}
+      <main className="flex">
+        <SideBar />
+        {children}
+      </main>
     </>
   )
 }
