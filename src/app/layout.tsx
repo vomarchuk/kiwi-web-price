@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import { Raleway } from '@next/font/google'
 import './globals.css'
 import { QueryProvider } from '@/Provider'
-import { SideBar } from './components/Layout/SideBar/SideBar'
-
 const raleway = Raleway({
   weight: ['400', '500', '700'],
   subsets: ['latin'],

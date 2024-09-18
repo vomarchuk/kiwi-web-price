@@ -1,6 +1,0 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home2/kiwibeau/public_html/
-    - if [ ! -d "$DEPLOYPATH" ]; then mkdir -p $DEPLOYPATH; fi
-    - /bin/cp -R out/* $DEPLOYPATH
