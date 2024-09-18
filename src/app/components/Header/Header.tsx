@@ -4,23 +4,50 @@ import Link from 'next/link'
 import { SOCIAL_LINKS } from '@/app/constants/SOCIAL_LINKS'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import InstagramIcon from '@mui/icons-material/Instagram'
+import styled from '@emotion/styled'
 
 export const Header = () => {
   return (
-    <header className="flex flex-col justify-center items-center mt-5">
+    <HeaderStyled>
       <LogoType width={200} />
-      <ul className="flex justify-center mt-[20px]">
-        <li className="inline">
+      <ListStyled>
+        <ItemStyled>
           <Link target="_blank" rel="nofollow" href={SOCIAL_LINKS.FACEBOOK}>
-            <FacebookIcon className="text-[#1178f2] w-10 h-auto" />
+            <FacebookIconStyled />
           </Link>
-        </li>
-        <li className="inline ml-[15px]">
+        </ItemStyled>
+        <ItemStyled>
           <Link href={SOCIAL_LINKS.INSTAGRAM} target="_blank" rel="nofollow">
-            <InstagramIcon className="text-[#E74E53] w-10 h-auto" />
+            <InstagramIconStyled />
           </Link>
-        </li>
-      </ul>
-    </header>
+        </ItemStyled>
+      </ListStyled>
+    </HeaderStyled>
   )
 }
+
+const HeaderStyled = styled.header`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+`
+const ListStyled = styled.ul`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`
+const ItemStyled = styled.li`
+  display: inline;
+`
+const FacebookIconStyled = styled(FacebookIcon)`
+  color: #1178f2;
+  width:10px
+  height: auto;
+  `
+const InstagramIconStyled = styled(InstagramIcon)`
+  color: #E74E53;
+  width:10px
+  height: auto;
+  `

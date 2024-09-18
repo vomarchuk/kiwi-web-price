@@ -4,6 +4,7 @@
     "logomark",
     "nextjs",
     "SVGID",
-    "tailwindcss"
+    "tailwindcss",
+    "tanstack"
   ]
 }

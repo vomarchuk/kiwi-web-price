@@ -1,11 +1,6 @@
-import type { Metadata } from 'next'
-import { Raleway } from '@next/font/google'
+import { Metadata } from 'next/types'
 import './globals.css'
 import { QueryProvider } from '@/Provider'
-const raleway = Raleway({
-  weight: ['400', '500', '700'],
-  subsets: ['latin'],
-})
 
 export const metadata: Metadata = {
   title: 'Kiwi Beauty Center',
@@ -19,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={raleway.className}>
+      <body>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

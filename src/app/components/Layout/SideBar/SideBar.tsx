@@ -32,21 +32,25 @@ export const SideBar = () => {
     dispatch(setCategories(dataCategory))
   }, [dataCategory])
   return (
-    <aside className="flex flex-col">
+    <aside
+    // className="flex flex-col"
+    >
       {/* <h2>TEXT</h2> */}
-      <ul className="w-[250px]">
+      <ul
+      // className="w-[250px]"
+      >
         <li>
           <SideBarButton href="aboutUs" label="aboutUs" />
         </li>
         {dataCategory &&
           dataCategory.map((category: any) => (
-            <li className="mt-[10px]">
+            <li>
               <SideBarButton href={category.name} label={category.name} />
             </li>
           ))}
         {dataCategories &&
           dataCategories.map((subMenu: any) => (
-            <li className="mt-[10px]">
+            <li>
               <SideBarButton href={subMenu.href} label={subMenu.name} />
             </li>
           ))}

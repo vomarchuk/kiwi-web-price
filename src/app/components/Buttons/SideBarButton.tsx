@@ -11,7 +11,7 @@ export const SideBarButton = ({ href, label }: ISideBarButton) => {
 
   return (
     <Button
-      className="w-full  bg-[#afb1b8]  shadow-buttonBoxShadow text-white h-[50px] text-[12px] font-bold hover:bg-accent"
+      // className="w-full  bg-[#afb1b8]  shadow-buttonBoxShadow text-white h-[50px] text-[12px] font-bold hover:bg-accent"
       onClick={redirect}
     >
       {label}
