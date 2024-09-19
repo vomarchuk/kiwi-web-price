@@ -2,7 +2,11 @@
 import { Box, Button, Container, InputLabel, TextField } from '@mui/material';
 import { LogoType } from '../../../assets/icons/Logotype';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { logoutUser, signInWithEmail } from '@/api/userOperations';
+import { useSelector } from 'react-redux';
+import { userSelectors } from '@/store/selectors';
 interface IInputs {
   email: string;
   password: string;
@@ -14,10 +18,26 @@ const SignIn = () => {
     handleSubmit,
     control,
     formState: { isValid },
-  } = useForm<IInputs>();
-  const onSubmit: SubmitHandler<IInputs> = ({ email, password }) => {
-    console.log(email, password);
-  };
+  } = useForm<IInputs>({
+    defaultValues: {
+      email: 'mr.volodymyr.marchuk@gmail.com',
+      password: 'Vova18021987',
+    },
+  });
+  const userAccess = useSelector(userSelectors.userAccess);
+  const router = useRouter();
+  const regex = /^[0-9a-zA-Z!@#$%^&*()-_+=,.<>:?/|[\]{}"'~`]*$/;
+  const [loginErrors, setLoginErrors] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const onSubmit: SubmitHandler<IInputs> = async ({ email, password }) =>
+    signInWithEmail(email, password, setLoginErrors, setIsLoggedIn);
+
+  useEffect(() => {
+    if (isLoggedIn) router.push(`${userAccess ? '/home' : '/accessDenied'}`);
+    if (loginErrors) {
+      setLoginErrors(null);
+    }
+  }, [loginErrors, isLoggedIn]);
 
   return (
     <div>
@@ -29,6 +49,10 @@ const SignIn = () => {
           control={control}
           rules={{
             required: true,
+            pattern: {
+              value: regex,
+              message: 'Pole nie może zawierać specjalnych znaków',
+            },
           }}
           render={() => (
             <Box>
@@ -55,6 +79,9 @@ const SignIn = () => {
           Zaloguj się
         </Button>
       </form>
+      <Button onClick={(isLoggedIn: any) => logoutUser(isLoggedIn)}>
+        Wyloguj się
+      </Button>
     </div>
   );
 };
