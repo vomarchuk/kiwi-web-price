@@ -14,7 +14,7 @@ const SignIn = () => {
     handleSubmit,
     control,
     formState: { isValid },
-  } = useForm();
+  } = useForm<IInputs>();
   const onSubmit: SubmitHandler<IInputs> = ({ email, password }) => {
     console.log(email, password);
   };
