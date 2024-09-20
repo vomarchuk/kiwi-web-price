@@ -30,14 +30,17 @@ export const SideBar = () => {
       <ul
       // className="w-[250px]"
       >
-        <Link href="/home/services/your-dynamic-slug">
+        <Link href="/home/services?id=1">
           <p>Go to Dynamic Route</p>
         </Link>
 
         {dataCategory &&
           dataCategory.map((category: any) => (
             <li>
-              <SideBarButton href={category.name} label={category.name} />
+              <SideBarButton
+                href={`/services?id=${category.name}`}
+                label={category.name}
+              />
             </li>
           ))}
         {dataSubMenu &&
