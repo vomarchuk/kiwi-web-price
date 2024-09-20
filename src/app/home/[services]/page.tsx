@@ -9,30 +9,33 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { CategoryType, ServiceType } from '@/app/helpers/schemas';
+import { Container } from '@mui/material';
+import styled from '@emotion/styled';
 const ServicePage = () => {
   const router = useRouter();
   const categoryId = useSearchParams().get('id');
   if (!categoryId) return;
-  const { data: dataService } = useQuery({
+
+  const { data: dataCategories } = useQuery<CategoryType[]>({
+    queryKey: ['categories'],
+    queryFn: async () => await fetchItems('categories'),
+  });
+
+  const { data: dataService } = useQuery<ServiceType[]>({
     queryKey: ['services'],
     queryFn: async () => await fetchItems('services'),
   });
-
-  const currentServiceCollection = dataService?.filter(
-    (service: any) => service.categoryId === categoryId,
+  const currentCategory = dataCategories?.find(
+    (category) => category.id === categoryId,
   );
+  const currentServiceCollection = dataService?.filter(
+    (service) => service.categoryId === categoryId,
+  );
+
   return (
-    // <div>
-    //   <h1>Dynamic Route</h1>
-    //   {currentServiceCollection &&
-    //     currentServiceCollection.map((service: any) => (
-    //       <li key={service.id}>
-    //         <p>{service.categoryName}</p>
-    //         <p>{service.name}</p>
-    //       </li>
-    //     ))}
-    // </div>
-    <>
+    <ContainerStyled>
+      {currentCategory && <h1>{currentCategory.name}</h1>}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -54,9 +57,13 @@ const ServicePage = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </ContainerStyled>
   );
 };
+
+const ContainerStyled = styled(Container)`
+  text-align: center;
+`;
 
 export default ServicePage;
 

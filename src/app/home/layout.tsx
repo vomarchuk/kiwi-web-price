@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 import { Header } from '../components/Header/Header';
 import { SideBar } from '../components/Layout/SideBar/SideBar';
 import { useRouter } from 'next/navigation';
+import styled from '@emotion/styled';
+import { Container } from '@mui/material';
 
 interface ViewProps {
   children: React.ReactNode;
@@ -16,12 +18,16 @@ export default function HomePageLayout({ children }: ViewProps) {
     }
   });
   return (
-    <>
+    <Container>
       <Header />
-      <main className="flex">
+      <MainStyled>
         <SideBar />
         {children}
-      </main>
-    </>
+      </MainStyled>
+    </Container>
   );
 }
+
+const MainStyled = styled.main`
+  display: flex;
+`;

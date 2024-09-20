@@ -27,13 +27,18 @@ export const SideBar = () => {
               <SideBarButton
                 href={`/services?id=${category.id}`}
                 label={category.name}
+                categoryId={category.id}
               />
             </ItemStyled>
           ))}
         {dataSubMenu &&
           dataSubMenu.map((subMenu: any) => (
             <li key={subMenu.id}>
-              <SideBarButton href={subMenu.href} label={subMenu.name} />
+              <SideBarButton
+                href={subMenu.href}
+                label={subMenu.name}
+                // categoryId={category.id}
+              />
             </li>
           ))}
       </ListStyled>
@@ -44,13 +49,13 @@ export const SideBar = () => {
 const AsideStyled = styled.aside`
   display: flex;
   flex-direction: column;
-  width: 260px;
+  min-width: 260px;
 `;
 const ListStyled = styled.ul`
   list-style: none;
 `;
 const ItemStyled = styled.li`
-  &:not(:first-child) {
+  &:not(:first-of-type) {
     margin-top: 10px;
   }
 `;
