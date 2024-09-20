@@ -1,5 +1,7 @@
-import { collection, getDocs, query } from 'firebase/firestore'
+import { collection, doc, getDocs, query, setDoc } from 'firebase/firestore'
 import { firestore } from './firebase'
+import { store } from '@/store/store'
+import { ServiceType } from '@/app/helpers/schemas'
 export const getAllCategories = async () => {
   try {
     const q = query(collection(firestore, 'categories'))
@@ -15,3 +17,14 @@ export const getAllCategories = async () => {
     throw error
   }
 }
+
+// export const addNewService = async (newItem: ServiceType) => {
+//   try {
+//     const itemRef = doc(firestore, 'services', newItem.id)
+//     await setDoc(itemRef, newItem)
+//     store.dispatch(addNewService(newItem))
+//   } catch (error) {
+
+//   }
+// }
+
