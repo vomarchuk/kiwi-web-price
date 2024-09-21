@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Button } from '@mui/material';
+import { Button, ButtonProps } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { theme } from '@/theme';
 interface ISideBarButton {
@@ -10,12 +10,7 @@ interface ISideBarButton {
 }
 export const SideBarButton = ({ href, label, categoryId }: ISideBarButton) => {
   const router = useRouter();
-  const categoryIdByParams = useSearchParams().get('id');
-  // console.log(categoryId);
-  // console.log(href);
-  if (categoryId === categoryIdByParams) {
-    console.log(label);
-  }
+  const categoryIdByParams = useSearchParams().get('id') as string;
   const redirect = () => router.push(`/home/${href}`);
 
   return (
@@ -28,19 +23,24 @@ export const SideBarButton = ({ href, label, categoryId }: ISideBarButton) => {
   );
 };
 
-interface IButtonStyled {
+interface IButtonStyled extends ButtonProps {
   isActive: boolean;
 }
 
-const ButtonStyled = styled(Button)<IButtonStyled>`
-  width: 100%;
+const ButtonStyled = styled(
+  React.forwardRef<HTMLButtonElement, IButtonStyled>(
+    ({ isActive, ...props }, ref) => <Button {...props} ref={ref} />,
+  ),
+)<IButtonStyled>(
+  ({ isActive }) =>
+    ` width: 100%;
   height: 40px;
   font-weight: bold;
   font-size: 10px;
-  background-color: ${({ isActive }) =>
-    isActive ? 'green' : theme.accentColor};
+  background-color: ${isActive ? 'green' : theme.accentColor};
   color: white;
   &:hover {
     background-color: green;
   }
-`;
+`,
+);

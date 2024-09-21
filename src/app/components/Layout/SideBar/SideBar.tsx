@@ -1,10 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { SideBarButton } from '../../Buttons/SideBarButton';
 import { fetchItems } from '@/api/firebaseFunctions';
-// import { useDispatch } from 'react-redux';
 import styled from '@emotion/styled';
 export const SideBar = () => {
-  // const dispatch = useDispatch();
   const { data: dataCategory } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => await fetchItems('categories'),
@@ -13,11 +11,7 @@ export const SideBar = () => {
     queryKey: ['subMenu'],
     queryFn: async () => await fetchItems('subMenu'),
   });
-  //
 
-  // useEffect(() => {
-  //   dispatch(setCategories(dataCategory));
-  // }, [dataCategory]);
   return (
     <AsideStyled>
       <ListStyled>
