@@ -1,9 +1,8 @@
 import React from 'react';
 import { Box, Modal, Typography } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import styled from '@emotion/styled';
 import { CreateServiceForm } from '../Forms/createNewServiceForm';
-import { theme } from '@/theme';
+import { CloseIconButton } from '../Buttons/CloseIconButton';
 
 interface ICreateServiceForm {
   open: boolean;
@@ -27,9 +26,9 @@ export const ServicesModal = ({
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Dodaj usługe do kategorii {title?.toLowerCase()}
           </Typography>
-          <CloseIconStyled onClick={handleClose} />
+          <CloseIconButton onClick={handleClose} />
         </HeaderContainerStyled>
-        <CreateServiceForm />
+        <CreateServiceForm handleCloseModal={handleClose} />
       </ContainerStyled>
     </Modal>
   );
@@ -48,17 +47,4 @@ const ContainerStyled = styled(Box)`
 const HeaderContainerStyled = styled(Box)`
   display: flex;
   justify-content: space-between;
-`;
-
-const CloseIconStyled = styled(CloseIcon)`
-  fill: ${theme.accentColor};
-  width: 24px;
-  height: 24px;
-  border: 2px solid ${theme.accentColor};
-  border-radius: 50%;
-  cursor: pointer;
-  &:hover {
-    box-shadow: 1px 1px 22px ${theme.accentColor};
-    transition: box-shadow 0.2s ease;
-  }
 `;

@@ -1,4 +1,4 @@
-import { collection, doc, DocumentData, getDocs, query, setDoc, where } from "firebase/firestore"
+import { collection, deleteDoc, doc, DocumentData, getDocs, query, setDoc, where } from "firebase/firestore"
 import { firestore } from "./firebase"
 
 export const fetchItems = async<T>(firestoreCollections: string) => {
@@ -27,8 +27,6 @@ export const fetchItemsById = async<T>(firestoreCollections: string, itemId: str
       const item = { ...doc.data() as T, id: doc.id }
       allItems.push(item as T)
     })
-    // console.log(allItems);
-
     return allItems
   } catch (error) {
     console.error(`Error fetching ${firestoreCollections}: ${error}`)
@@ -43,5 +41,14 @@ export const addNewItem = async<T extends DocumentData>(item: T, firestoreCollec
   } catch (error) {
     console.error(error);
 
+  }
+}
+
+export const removeItem = async<T>(firestoreCollections: string, itemId: string) => {
+  const itemRef = doc(firestore, firestoreCollections, itemId)
+  try {
+    await deleteDoc(itemRef)
+  } catch (error) {
+    console.error(`error deleting`);
   }
 }

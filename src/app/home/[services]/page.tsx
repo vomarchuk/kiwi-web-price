@@ -1,6 +1,6 @@
 'use client';
-import { fetchItems } from '@/api/firebaseFunctions';
-import { useQuery } from '@tanstack/react-query';
+import { fetchItems, removeItem } from '@/api/firebaseFunctions';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,10 +12,13 @@ import Paper from '@mui/material/Paper';
 import { CategoryType, ServiceType } from '@/app/helpers/schemas';
 import { Button, Container } from '@mui/material';
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
+
 import { ServicesModal } from '@/app/components/Modals/ServicesModal';
 
 const ServicePage = () => {
+  const queryClient = useQueryClient();
   const categoryId = useSearchParams().get('id');
   const [open, setOpen] = useState(false);
   if (!categoryId) return;
@@ -38,7 +41,10 @@ const ServicePage = () => {
 
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const removeItemById = (serviceId: string) => {
+    removeItem('services', serviceId);
+    queryClient.invalidateQueries(['services'] as any);
+  };
   return (
     <ContainerStyled>
       {currentCategory && <h1>{currentCategory.name}</h1>}
@@ -57,6 +63,7 @@ const ServicePage = () => {
               <TableCell>Usługa</TableCell>
               <TableCell>Cena</TableCell>
               <TableCell>Czas wykonania</TableCell>
+              <TableCell>Usuń</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -66,6 +73,9 @@ const ServicePage = () => {
                   <TableCell>{service.name}</TableCell>
                   <TableCell>{service.price} zł</TableCell>
                   <TableCell>{service.duration} min</TableCell>
+                  <TableCell>
+                    <CloseIcon onClick={() => removeItemById(service.id)} />
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>

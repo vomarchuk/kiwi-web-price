@@ -1,10 +1,38 @@
+'use client';
+import { ServiceType } from '@/app/helpers/schemas';
 import { Box, Button, InputLabel, TextField } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { v4 as uuidv4 } from 'uuid';
+import { addNewItem } from '@/api/firebaseFunctions';
+import { useQueryClient } from '@tanstack/react-query';
+export const CreateServiceForm = ({ handleCloseModal }: any) => {
+  const { register, handleSubmit, watch, reset, control } = useForm({
+    defaultValues: {
+      name: '',
+      price: '',
+      duration: '',
+      categoryId: '',
+    },
+  });
+  const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
+  const categoryId = searchParams.get('id');
+  const x = watch('categoryId');
 
-export const CreateServiceForm = () => {
-  const { register, handleSubmit, reset, control } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = async (data: any) => {
+    const newService = {
+      ...data,
+      id: uuidv4(),
+      categoryId,
+    };
+    await addNewItem(newService, 'services');
+    reset();
+    handleCloseModal();
+    queryClient.invalidateQueries(['services'] as any);
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Controller
