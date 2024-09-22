@@ -44,7 +44,11 @@ const ServicePage = () => {
       {currentCategory && <h1>{currentCategory.name}</h1>}
 
       <Button onClick={handleClickOpen}>add new service</Button>
-      <ServicesModal open={open} handleClose={handleClose} />
+      <ServicesModal
+        open={open}
+        handleClose={handleClose}
+        title={currentCategory?.name}
+      />
 
       <TableContainer component={Paper}>
         <Table>
