@@ -30,7 +30,7 @@ export const ServicesModal = ({ open, handleClose }: any) => {
         </Button>
 
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          test.
         </Typography>
       </Box>
     </Modal>

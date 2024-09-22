@@ -13,7 +13,7 @@ import { CategoryType, ServiceType } from '@/app/helpers/schemas';
 import { Button, Container } from '@mui/material';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
-import { ServicesModal } from '@/app/components/Modals/servicesModal';
+import { ServicesModal } from '@/app/components/Modals/ServicesModal';
 
 const ServicePage = () => {
   const categoryId = useSearchParams().get('id');
@@ -83,6 +83,3 @@ const ModalStyled = styled.div`
   border: 1px solid tomato;
 `;
 export default ServicePage;
-
-// W154NGGXXF3kHwwtgyY7; mani
-// 48AGR5DdAwE7mcElvWXg pedi
