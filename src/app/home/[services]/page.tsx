@@ -1,7 +1,7 @@
 'use client';
 import { fetchItems, removeItem } from '@/api/firebaseFunctions';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,12 +10,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { CategoryType, ServiceType } from '@/app/helpers/schemas';
-import { Button, Container } from '@mui/material';
+import { Container } from '@mui/material';
 import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
-
+import React, { useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { ServicesModal } from '@/app/components/Modals/ServicesModal';
+import { AddIconButton } from '@/app/components/Buttons/AddIconButton';
+import { theme } from '@/theme';
 
 const ServicePage = () => {
   const queryClient = useQueryClient();
@@ -49,7 +50,7 @@ const ServicePage = () => {
     <ContainerStyled>
       {currentCategory && <h1>{currentCategory.name}</h1>}
 
-      <Button onClick={handleClickOpen}>add new service</Button>
+      <AddIconButton onClick={handleClickOpen} />
       <ServicesModal
         open={open}
         handleClose={handleClose}
@@ -74,7 +75,9 @@ const ServicePage = () => {
                   <TableCell>{service.price} zł</TableCell>
                   <TableCell>{service.duration} min</TableCell>
                   <TableCell>
-                    <CloseIcon onClick={() => removeItemById(service.id)} />
+                    <DeleteIconStyled
+                      onClick={() => removeItemById(service.id)}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
@@ -88,12 +91,12 @@ const ServicePage = () => {
 const ContainerStyled = styled(Container)`
   text-align: center;
 `;
-const ModalStyled = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-  background-color: black;
-  border: 1px solid tomato;
+const DeleteIconStyled = styled(DeleteIcon)`
+  fill: ${theme.accentColor};
+  cursor: pointer;
+  &:hover {
+    fill: red;
+  }
 `;
+
 export default ServicePage;
