@@ -10,7 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { CategoryType, ServiceType } from '@/app/helpers/schemas';
-import { Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -48,9 +48,12 @@ const ServicePage = () => {
   };
   return (
     <ContainerStyled>
-      {currentCategory && <h1>{currentCategory.name}</h1>}
-
-      <AddIconButton onClick={handleClickOpen} />
+      <HeaderBoxStyled>
+        {currentCategory && (
+          <HeaderTitleStyled>{currentCategory.name}</HeaderTitleStyled>
+        )}
+        <AddIconButton onClick={handleClickOpen} />
+      </HeaderBoxStyled>
       <ServicesModal
         open={open}
         handleClose={handleClose}
@@ -90,6 +93,13 @@ const ServicePage = () => {
 
 const ContainerStyled = styled(Container)`
   text-align: center;
+`;
+const HeaderBoxStyled = styled(Box)`
+  display: flex;
+  align-items: center;
+`;
+const HeaderTitleStyled = styled.h1`
+  margin-right: 20px;
 `;
 const DeleteIconStyled = styled(DeleteIcon)`
   fill: ${theme.accentColor};
