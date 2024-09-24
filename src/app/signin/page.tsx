@@ -1,20 +1,19 @@
 'use client';
-import { Button } from '@mui/material';
 import { LogoType } from '../../../assets/icons/Logotype';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { logoutUser, signInWithEmail } from '@/api/userOperations';
-import { useSelector } from 'react-redux';
-import { userSelectors } from '@/store/selectors';
+import { signInWithEmail } from '@/api/userOperations';
 import LoginForm from '../components/Forms/LoginForm';
+import { Box, Container } from '@mui/material';
+import styled from '@emotion/styled';
 interface IInputs {
   email: string;
   password: string;
 }
 
 const SignIn = () => {
-  const userAccess = useSelector(userSelectors.userAccess);
+  const storedToken = localStorage.getItem('token');
   const router = useRouter();
   const [loginErrors, setLoginErrors] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,21 +21,25 @@ const SignIn = () => {
     signInWithEmail(email, password, setLoginErrors, setIsLoggedIn);
 
   useEffect(() => {
-    if (isLoggedIn) router.push(`${userAccess ? '/home' : '/accessDenied'}`);
+    if (storedToken) router.push(`${'/home'}`);
     if (loginErrors) {
       setLoginErrors(null);
     }
   }, [loginErrors, isLoggedIn]);
 
   return (
-    <div>
+    <ContainerStyled>
       <LogoType width={200} />
       <p>Witaj z powrotem</p>
       <LoginForm onSubmit={onSubmit} />
-      {/* <Button onClick={(isLoggedIn: any) => logoutUser(isLoggedIn)}>
-        Wyloguj się
-      </Button> */}
-    </div>
+    </ContainerStyled>
   );
 };
 export default SignIn;
+
+const ContainerStyled = styled(Container)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+`;

@@ -43,7 +43,7 @@ export const SideBar = () => {
 const AsideStyled = styled.aside`
   display: flex;
   flex-direction: column;
-  min-width: 260px;
+  min-width: 230px;
 `;
 const ListStyled = styled.ul`
   list-style: none;

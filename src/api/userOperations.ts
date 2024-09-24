@@ -108,6 +108,8 @@ export const signInWithEmail = (
       const token = await user.getIdToken()
       localStorage.setItem('token', token)
       const userData = await fetchUserData(user.uid)
+      console.log('hello');
+
       store.dispatch(setCurrentUser(userData))
       setIsLoggedIn(true)
     })
@@ -146,10 +148,6 @@ export const logoutUser = async (setIsLogout: (n: boolean) => void) => {
     localStorage.removeItem('token')
     localStorage.removeItem('currentRestaurantId')
     store.dispatch(logoutCurrentUser())
-    // store.dispatch(cleanProducts())
-    // store.dispatch(cleanOrders())
-    // store.dispatch(cleanCategories())
-    // store.dispatch(cleanSuppliers())
     setIsLogout(true)
   } catch (error) {
     console.error('Error during logging out from Firebase:', error)

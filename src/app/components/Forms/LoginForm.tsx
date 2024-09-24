@@ -1,7 +1,8 @@
 import { Box, Button, InputLabel, TextField } from '@mui/material';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-
+import styled from '@emotion/styled';
+import { theme } from '@/theme';
 interface IInputs {
   email: string;
   password: string;
@@ -53,16 +54,33 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
         render={() => (
           <Box>
             <InputLabel>Password</InputLabel>
-            <TextField placeholder="password" {...register('password')} />
+            <TextField
+              type="password"
+              placeholder="password"
+              {...register('password')}
+            />
           </Box>
         )}
       />
 
-      <Button type="submit" disabled={!isValid}>
+      <SubmitButtonStyled type="submit" disabled={!isValid}>
         Zaloguj się
-      </Button>
+      </SubmitButtonStyled>
     </form>
   );
 };
 
 export default LoginForm;
+
+const SubmitButtonStyled = styled(Button)`
+  background-color: ${theme.accentColor};
+  color: white;
+  margin-top: 10px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+  &:hover {
+    box-shadow: 0px 0px 10px 3px ${theme.accentColor};
+  }
+`;

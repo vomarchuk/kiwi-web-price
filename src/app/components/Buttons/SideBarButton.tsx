@@ -33,8 +33,8 @@ const ButtonStyled = styled(
   ),
 )<IButtonStyled>(
   ({ isActive }) =>
-    ` width: 100%;
-  height: 40px;
+    `width: 100%;
+  padding: 10px;
   font-weight: bold;
   font-size: 10px;
   background-color: ${isActive ? 'green' : theme.accentColor};
