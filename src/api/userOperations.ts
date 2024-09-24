@@ -1,74 +1,15 @@
 'use client'
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore'
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { doc, getDoc } from 'firebase/firestore'
 
 import { auth } from './firebase'
 import { firestore } from './firebase'
+import { UserType } from "@/app/helpers/schemas"
 
 export const fetchUserData = async (userId: string) => {
   const usersDocRef = doc(firestore, 'users', userId)
-  const userData = (await getDoc(usersDocRef)).data() as any
+  const userData = (await getDoc(usersDocRef)).data() as UserType
   return userData
-}
-
-export const getAllUsersByRestaurantId = async (restaurantId: string) => {
-  try {
-    const q = query(collection(firestore, 'users'), where('restaurantsIds', 'array-contains', restaurantId))
-    const querySnapshot = await getDocs(q)
-    const allUsers: any = []
-    querySnapshot.forEach((doc) => {
-      const user = { ...doc.data() as any }
-      allUsers.push(user)
-    })
-    return allUsers
-  } catch (error) {
-    console.error('Error fetching users:', error)
-    throw error
-  }
-}
-
-export const signUpWithEmail = async (
-  email: string,
-  password: string,
-  setLoginErrors: (n: string) => void,
-  setIsLoggedIn: (n: boolean) => void
-) => {
-  try {
-    const usersCollection = collection(firestore, 'users');
-    const q = query(usersCollection);
-    const querySnapshot = await getDocs(q)
-    let getValidUser: any
-    querySnapshot.forEach((doc) => {
-      const user = doc.data() as any
-      if (user.email === email) getValidUser = user
-    })
-    if (getValidUser) {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      const newUser = userCredential.user
-      const oldDocRef = doc(firestore, 'users', getValidUser.id);
-      const newDocRef = doc(firestore, 'users', newUser.uid);
-      getValidUser.id = newUser.uid
-      await setDoc(newDocRef, getValidUser);
-      await deleteDoc(oldDocRef);
-      const token = await newUser.getIdToken()
-      localStorage.setItem('token', token)
-      const userData = await fetchUserData(newUser.uid)
-      localStorage.setItem('currentRestaurantId', userData.restaurantsIds[0])
-      setIsLoggedIn(true)
-    } else {
-      throw new Error('auth/register-is-denied')
-    }
-  } catch (error: any) {
-    if (!error.code) error.code = error.message
-    switch (error.code) {
-      case 'auth/email-already-in-use':
-        setLoginErrors('Email already in use');
-        break
-      case 'auth/register-is-denied':
-        setLoginErrors('Ups... wychodzi na to, że nie masz uprawnień do rejestracji');
-        break
-    }
-  }
 }
 
 export const signInWithEmail = (

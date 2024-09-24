@@ -4,7 +4,11 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { theme } from '@/theme';
 import { IconButton } from '@mui/material';
 
-export const AddIconButton = ({ onClick }: any) => (
+interface IAddIconButton {
+  onClick: () => void;
+}
+
+export const AddIconButton = ({ onClick }: IAddIconButton) => (
   <ButtonStyled>
     <AddIconButtonStyled onClick={onClick} />
   </ButtonStyled>

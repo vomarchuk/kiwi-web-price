@@ -3,7 +3,10 @@ import { theme } from '@/theme';
 import CloseIcon from '@mui/icons-material/Close';
 import styled from '@emotion/styled';
 
-export const CloseIconButton = ({ onClick }: any) => {
+interface ICloseIconButton {
+  onClick: () => void;
+}
+export const CloseIconButton = ({ onClick }: ICloseIconButton) => {
   return <CloseIconStyled onClick={onClick} />;
 };
 

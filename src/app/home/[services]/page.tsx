@@ -61,7 +61,7 @@ const ServicePage = () => {
   };
   const removeItemById = (serviceId: string) => {
     removeItem('services', serviceId);
-    queryClient.invalidateQueries(['services'] as any);
+    queryClient.invalidateQueries({ queryKey: ['services'] });
     handleClose();
   };
   const editItemById = (serviceId: string) => {
@@ -96,7 +96,7 @@ const ServicePage = () => {
           </TableHead>
           <TableBody>
             {currentServiceCollection &&
-              currentServiceCollection.map((service: any) => (
+              currentServiceCollection.map((service) => (
                 <TableRow key={service.id}>
                   <TableCell>{service.name}</TableCell>
                   <TableCell>{service.price} zł</TableCell>

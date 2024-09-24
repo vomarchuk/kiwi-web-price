@@ -38,7 +38,7 @@ export const SideBar = () => {
             </ItemStyled>
           ))}
         {dataSubMenu &&
-          dataSubMenu.map((subMenu: any) => (
+          dataSubMenu.map((subMenu) => (
             <li key={subMenu.id}>
               <SideBarButton href={subMenu.href} label={subMenu.name} />
             </li>
