@@ -84,7 +84,7 @@ const ServicePage = () => {
         editItemId={editItemId}
       />
 
-      <TableContainer component={Paper} id="table-title">
+      <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>

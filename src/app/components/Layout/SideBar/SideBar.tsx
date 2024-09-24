@@ -3,9 +3,14 @@ import { SideBarButton } from '../../Buttons/SideBarButton';
 import { fetchItems } from '@/api/firebaseFunctions';
 import styled from '@emotion/styled';
 import { CategoryType, SubMenuType } from '@/app/helpers/schemas';
-import { useEffect } from 'react';
+import { Button } from '@mui/material';
+import { logoutUser } from '@/api/userOperations';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export const SideBar = () => {
+  const [isLogoutUser, setIsLogoutUser] = useState<Boolean>(false);
+  const router = useRouter();
   const { data: dataCategory } = useQuery<CategoryType[]>({
     queryKey: ['categories'],
     queryFn: async () => await fetchItems('categories'),
@@ -15,15 +20,12 @@ export const SideBar = () => {
     queryFn: async () => await fetchItems('subMenu'),
   });
   useEffect(() => {
-    // Прокрутка до елемента з ідентифікатором 'table-title'
-    const element = document.getElementById('table-title');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, []);
-
+    const storedToken = localStorage.getItem('token');
+    if (isLogoutUser || !storedToken) router.push('/');
+  }, [isLogoutUser]);
   return (
     <AsideStyled>
+      <Button onClick={() => logoutUser(setIsLogoutUser)}>wyloguj się</Button>
       <ListStyled>
         {dataCategory &&
           dataCategory.map((category) => (

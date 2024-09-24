@@ -1,13 +1,7 @@
 'use client'
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore'
-// import { userSchema, UserType } from "@/helpers/schemas"
-// import { cleanCategories } from "@/store/categoriesStore"
-// import { cleanOrders } from "@/store/ordersStore"
-// import { cleanProducts } from "@/store/productsStore"
-// import { cleanSuppliers } from "@/store/suppliersStore"
-import { store } from '../store/store'
-import { logoutCurrentUser, setCurrentUser } from "../store/usersStore"
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore'
+
 import { auth } from './firebase'
 import { firestore } from './firebase'
 
@@ -17,25 +11,6 @@ export const fetchUserData = async (userId: string) => {
   return userData
 }
 
-// export const createNewUser = async (newUser: UserType) => {
-//   try {
-//     const redirectUrl = ${ window.location.origin }/signup?email=${newUser.email}
-//     userSchema.parse(newUser)
-//     const actionCodeSettings = {
-//       url: redirectUrl,
-//       handleCodeInApp: true,
-//     };
-//     await sendSignInLinkToEmail(auth, newUser.email, actionCodeSettings);
-//     console.log('Zaproszenie zostało wysłane.');
-//     const usersRef = doc(firestore, 'users', newUser.id)
-//     await setDoc(usersRef, newUser)
-//     store.dispatch(addNewUser(newUser))
-//   } catch (error: any) {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//     console.error(Błąd: ${ errorCode } - ${ errorMessage });
-//   }
-// }
 export const getAllUsersByRestaurantId = async (restaurantId: string) => {
   try {
     const q = query(collection(firestore, 'users'), where('restaurantsIds', 'array-contains', restaurantId))
@@ -79,7 +54,6 @@ export const signUpWithEmail = async (
       localStorage.setItem('token', token)
       const userData = await fetchUserData(newUser.uid)
       localStorage.setItem('currentRestaurantId', userData.restaurantsIds[0])
-      store.dispatch(setCurrentUser(userData))
       setIsLoggedIn(true)
     } else {
       throw new Error('auth/register-is-denied')
@@ -107,10 +81,7 @@ export const signInWithEmail = (
     .then(async ({ user }) => {
       const token = await user.getIdToken()
       localStorage.setItem('token', token)
-      const userData = await fetchUserData(user.uid)
-      console.log('hello');
-
-      store.dispatch(setCurrentUser(userData))
+      // const userData = await fetchUserData(user.uid)
       setIsLoggedIn(true)
     })
     .catch(({ code }) => {
@@ -146,8 +117,6 @@ export const logoutUser = async (setIsLogout: (n: boolean) => void) => {
     const auth = getAuth()
     await signOut(auth)
     localStorage.removeItem('token')
-    localStorage.removeItem('currentRestaurantId')
-    store.dispatch(logoutCurrentUser())
     setIsLogout(true)
   } catch (error) {
     console.error('Error during logging out from Firebase:', error)
@@ -159,7 +128,6 @@ const checkForUser = () => {
   return new Promise((_, reject) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       unsubscribe()
-      if (user) fetchUserData(user.uid).then(user => store.dispatch(setCurrentUser(user)))
     }, reject);
   });
 };
