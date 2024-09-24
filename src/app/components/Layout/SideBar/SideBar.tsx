@@ -2,21 +2,31 @@ import { useQuery } from '@tanstack/react-query';
 import { SideBarButton } from '../../Buttons/SideBarButton';
 import { fetchItems } from '@/api/firebaseFunctions';
 import styled from '@emotion/styled';
+import { CategoryType, SubMenuType } from '@/app/helpers/schemas';
+import { useEffect } from 'react';
+
 export const SideBar = () => {
-  const { data: dataCategory } = useQuery({
+  const { data: dataCategory } = useQuery<CategoryType[]>({
     queryKey: ['categories'],
     queryFn: async () => await fetchItems('categories'),
   });
-  const { data: dataSubMenu } = useQuery({
+  const { data: dataSubMenu } = useQuery<SubMenuType[]>({
     queryKey: ['subMenu'],
     queryFn: async () => await fetchItems('subMenu'),
   });
+  useEffect(() => {
+    // Прокрутка до елемента з ідентифікатором 'table-title'
+    const element = document.getElementById('table-title');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
 
   return (
     <AsideStyled>
       <ListStyled>
         {dataCategory &&
-          dataCategory.map((category: any) => (
+          dataCategory.map((category) => (
             <ItemStyled key={category.id}>
               <SideBarButton
                 href={`/services?id=${category.id}`}
@@ -28,11 +38,7 @@ export const SideBar = () => {
         {dataSubMenu &&
           dataSubMenu.map((subMenu: any) => (
             <li key={subMenu.id}>
-              <SideBarButton
-                href={subMenu.href}
-                label={subMenu.name}
-                // categoryId={category.id}
-              />
+              <SideBarButton href={subMenu.href} label={subMenu.name} />
             </li>
           ))}
       </ListStyled>

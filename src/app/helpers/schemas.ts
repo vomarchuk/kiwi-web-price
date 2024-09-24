@@ -13,6 +13,11 @@ export const serviceSchema = z.object({
   categoryId: z.string(),
   duration: z.string(),
 })
-
+export const subMenuSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  href: z.string(),
+})
+export type SubMenuType = z.infer<typeof subMenuSchema>
 export type CategoryType = z.infer<typeof categorySchema>
 export type ServiceType = z.infer<typeof serviceSchema>
