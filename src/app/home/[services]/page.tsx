@@ -10,18 +10,29 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { CategoryType, ServiceType } from '@/app/helpers/schemas';
-import { Box, Container } from '@mui/material';
+import { Box, Container, IconButton, Menu, MenuItem } from '@mui/material';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ServicesModal } from '@/app/components/Modals/ServicesModal';
 import { AddIconButton } from '@/app/components/Buttons/AddIconButton';
 import { theme } from '@/theme';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const ServicePage = () => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const opens = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloses = () => {
+    setAnchorEl(null);
+  };
+
   const queryClient = useQueryClient();
   const categoryId = useSearchParams().get('id');
   const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
   if (!categoryId) return;
 
   const { data: dataCategories } = useQuery<CategoryType[]>({
@@ -42,6 +53,7 @@ const ServicePage = () => {
 
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleClose2 = () => setOpen(false);
   const removeItemById = (serviceId: string) => {
     removeItem('services', serviceId);
     queryClient.invalidateQueries(['services'] as any);
@@ -78,9 +90,39 @@ const ServicePage = () => {
                   <TableCell>{service.price} zł</TableCell>
                   <TableCell>{service.duration} min</TableCell>
                   <TableCell>
-                    <DeleteIconStyled
+                    {/* <DeleteIconStyled
                       onClick={() => removeItemById(service.id)}
-                    />
+                    /> */}
+                    <div>
+                      <IconButton
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls={opens ? 'long-menu' : undefined}
+                        aria-expanded={opens ? 'true' : undefined}
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                      >
+                        <ModeVariantIconStyled />
+                      </IconButton>
+                      <Menu
+                        id="menu-appBar"
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        open={opens}
+                        onClose={handleCloses}
+                      >
+                        <MenuItem onClick={handleCloses}>Usuń</MenuItem>
+                        <MenuItem onClick={handleCloses}>Edytuj</MenuItem>
+                      </Menu>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -102,6 +144,14 @@ const HeaderTitleStyled = styled.h1`
   margin-right: 20px;
 `;
 const DeleteIconStyled = styled(DeleteIcon)`
+  fill: ${theme.accentColor};
+  cursor: pointer;
+  &:hover {
+    fill: red;
+  }
+`;
+
+const ModeVariantIconStyled = styled(MoreVertIcon)`
   fill: ${theme.accentColor};
   cursor: pointer;
   &:hover {
