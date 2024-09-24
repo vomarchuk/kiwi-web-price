@@ -5,14 +5,12 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
-import { addNewItem, fetchItems } from '@/api/firebaseFunctions';
+import { addNewItem, EditItemById, fetchItems } from '@/api/firebaseFunctions';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 export const CreateServiceForm = ({
   handleCloseModal,
   editServiceId = null,
 }: any) => {
-  console.log(editServiceId);
-
   const { register, handleSubmit, watch, reset, control } = useForm({
     defaultValues: {
       name: '',
@@ -24,7 +22,6 @@ export const CreateServiceForm = ({
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const categoryId = searchParams.get('id');
-  const x = watch('categoryId');
 
   const { data: dataServices } = useQuery({
     queryKey: ['services'],
@@ -34,10 +31,14 @@ export const CreateServiceForm = ({
   const onSubmit = async (data: any) => {
     const newService = {
       ...data,
-      id: uuidv4(),
+      id: editServiceId || uuidv4(),
       categoryId,
     };
-    await addNewItem(newService, 'services');
+    if (editServiceId) {
+      await EditItemById(newService as any, 'services');
+    } else {
+      await addNewItem(newService, 'services');
+    }
     reset();
     handleCloseModal();
     queryClient.invalidateQueries(['services'] as any);

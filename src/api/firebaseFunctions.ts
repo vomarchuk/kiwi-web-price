@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, DocumentData, getDocs, query, setDoc, where } from "firebase/firestore"
+import { collection, deleteDoc, doc, DocumentData, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore"
 import { firestore } from "./firebase"
 
 export const fetchItems = async<T>(firestoreCollections: string) => {
@@ -50,5 +50,14 @@ export const removeItem = async<T>(firestoreCollections: string, itemId: string)
     await deleteDoc(itemRef)
   } catch (error) {
     console.error(`error deleting`);
+  }
+}
+
+export const EditItemById = async<T extends DocumentData>(updateItem: T, firestoreCollections: string) => {
+  const itemRef = doc(firestore, firestoreCollections, updateItem.id)
+  try {
+    await updateDoc(itemRef, updateItem)
+  } catch (error) {
+    console.error(`Failed updating item`);
   }
 }

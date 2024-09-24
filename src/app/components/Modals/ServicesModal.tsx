@@ -16,8 +16,6 @@ export const ServicesModal = ({
   title,
   editItemId = null,
 }: ICreateServiceForm) => {
-  console.log(editItemId);
-
   return (
     <Modal
       open={open}
