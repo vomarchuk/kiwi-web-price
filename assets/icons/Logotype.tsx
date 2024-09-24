@@ -383,7 +383,6 @@ export const LogoType = (props: SVGProps<SVGSVGElement>) => (
         }}
       >
         <image
-          xlinkHref="C:\\\\Users\\\\48537\\\\Downloads\\\\84B801E6.jpg"
           width={110}
           height={110}
           style={{
@@ -459,7 +458,6 @@ export const LogoType = (props: SVGProps<SVGSVGElement>) => (
         }}
       >
         <image
-          xlinkHref="C:\\\\Users\\\\48537\\\\Downloads\\\\84B801E3.jpg"
           width={113}
           height={110}
           style={{
