@@ -8,12 +8,16 @@ interface ICreateServiceForm {
   open: boolean;
   handleClose: () => void;
   title?: string;
+  editItemId: string | null;
 }
 export const ServicesModal = ({
   open,
   handleClose,
   title,
+  editItemId = null,
 }: ICreateServiceForm) => {
+  console.log(editItemId);
+
   return (
     <Modal
       open={open}
@@ -28,7 +32,10 @@ export const ServicesModal = ({
           </Typography>
           <CloseIconButton onClick={handleClose} />
         </HeaderContainerStyled>
-        <CreateServiceForm handleCloseModal={handleClose} />
+        <CreateServiceForm
+          handleCloseModal={handleClose}
+          editServiceId={editItemId}
+        />
       </ContainerStyled>
     </Modal>
   );

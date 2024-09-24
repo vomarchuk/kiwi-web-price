@@ -5,9 +5,14 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
-import { addNewItem } from '@/api/firebaseFunctions';
-import { useQueryClient } from '@tanstack/react-query';
-export const CreateServiceForm = ({ handleCloseModal }: any) => {
+import { addNewItem, fetchItems } from '@/api/firebaseFunctions';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+export const CreateServiceForm = ({
+  handleCloseModal,
+  editServiceId = null,
+}: any) => {
+  console.log(editServiceId);
+
   const { register, handleSubmit, watch, reset, control } = useForm({
     defaultValues: {
       name: '',
@@ -21,6 +26,11 @@ export const CreateServiceForm = ({ handleCloseModal }: any) => {
   const categoryId = searchParams.get('id');
   const x = watch('categoryId');
 
+  const { data: dataServices } = useQuery({
+    queryKey: ['services'],
+    queryFn: async () => await fetchItems('services'),
+  });
+
   const onSubmit = async (data: any) => {
     const newService = {
       ...data,
@@ -32,7 +42,14 @@ export const CreateServiceForm = ({ handleCloseModal }: any) => {
     handleCloseModal();
     queryClient.invalidateQueries(['services'] as any);
   };
-
+  useEffect(() => {
+    const serviceData =
+      dataServices &&
+      dataServices.find((service: any) => service.id === editServiceId);
+    if (serviceData) {
+      reset(serviceData);
+    }
+  }, [editServiceId, reset]);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Controller

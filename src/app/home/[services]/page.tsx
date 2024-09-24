@@ -18,10 +18,15 @@ import { ServicesModal } from '@/app/components/Modals/ServicesModal';
 import { AddIconButton } from '@/app/components/Buttons/AddIconButton';
 import { theme } from '@/theme';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import EditIcon from '@mui/icons-material/Edit';
 
 const ServicePage = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const opens = Boolean(anchorEl);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [open, setOpen] = useState(false);
+  const [editItemId, setEditItemId] = useState<null | string>(null);
+
+  const openShowVariants = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -31,8 +36,6 @@ const ServicePage = () => {
 
   const queryClient = useQueryClient();
   const categoryId = useSearchParams().get('id');
-  const [open, setOpen] = useState(false);
-  const [open2, setOpen2] = useState(false);
   if (!categoryId) return;
 
   const { data: dataCategories } = useQuery<CategoryType[]>({
@@ -52,11 +55,19 @@ const ServicePage = () => {
   );
 
   const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleClose2 = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setEditItemId(null);
+  };
   const removeItemById = (serviceId: string) => {
     removeItem('services', serviceId);
     queryClient.invalidateQueries(['services'] as any);
+    handleClose();
+  };
+  const editItemById = (serviceId: string) => {
+    setAnchorEl(null);
+    setEditItemId(serviceId);
+    handleClickOpen();
   };
   return (
     <ContainerStyled>
@@ -70,6 +81,7 @@ const ServicePage = () => {
         open={open}
         handleClose={handleClose}
         title={currentCategory?.name}
+        editItemId={editItemId}
       />
 
       <TableContainer component={Paper}>
@@ -90,15 +102,14 @@ const ServicePage = () => {
                   <TableCell>{service.price} zł</TableCell>
                   <TableCell>{service.duration} min</TableCell>
                   <TableCell>
-                    {/* <DeleteIconStyled
-                      onClick={() => removeItemById(service.id)}
-                    /> */}
-                    <div>
+                    <>
                       <IconButton
                         aria-label="more"
                         id="long-button"
-                        aria-controls={opens ? 'long-menu' : undefined}
-                        aria-expanded={opens ? 'true' : undefined}
+                        aria-controls={
+                          openShowVariants ? 'long-menu' : undefined
+                        }
+                        aria-expanded={openShowVariants ? 'true' : undefined}
                         aria-haspopup="true"
                         onClick={handleClick}
                       >
@@ -116,13 +127,17 @@ const ServicePage = () => {
                           vertical: 'top',
                           horizontal: 'right',
                         }}
-                        open={opens}
+                        open={openShowVariants}
                         onClose={handleCloses}
                       >
-                        <MenuItem onClick={handleCloses}>Usuń</MenuItem>
-                        <MenuItem onClick={handleCloses}>Edytuj</MenuItem>
+                        <MenuItem onClick={() => removeItemById(service.id)}>
+                          Usuń
+                        </MenuItem>
+                        <MenuItem onClick={() => editItemById(service.id)}>
+                          edytuj
+                        </MenuItem>
                       </Menu>
-                    </div>
+                    </>
                   </TableCell>
                 </TableRow>
               ))}
@@ -142,13 +157,6 @@ const HeaderBoxStyled = styled(Box)`
 `;
 const HeaderTitleStyled = styled.h1`
   margin-right: 20px;
-`;
-const DeleteIconStyled = styled(DeleteIcon)`
-  fill: ${theme.accentColor};
-  cursor: pointer;
-  &:hover {
-    fill: red;
-  }
 `;
 
 const ModeVariantIconStyled = styled(MoreVertIcon)`
