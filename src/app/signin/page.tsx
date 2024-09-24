@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { signInWithEmail } from '@/api/userOperations';
 import LoginForm from '../components/Forms/LoginForm';
-import { Box, Container } from '@mui/material';
+import { Container } from '@mui/material';
 import styled from '@emotion/styled';
 interface IInputs {
   email: string;
@@ -13,7 +13,6 @@ interface IInputs {
 }
 
 const SignIn = () => {
-  const storedToken = localStorage.getItem('token');
   const router = useRouter();
   const [loginErrors, setLoginErrors] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,6 +20,8 @@ const SignIn = () => {
     signInWithEmail(email, password, setLoginErrors, setIsLoggedIn);
 
   useEffect(() => {
+    const storedToken =
+      typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     if (storedToken) router.push(`${'/home'}`);
     if (loginErrors) {
       setLoginErrors(null);
