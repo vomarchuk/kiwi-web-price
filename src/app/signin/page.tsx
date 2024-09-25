@@ -42,5 +42,5 @@ const ContainerStyled = styled(Container)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 50px;
+  padding-top: 30vh;
 `;

@@ -25,8 +25,10 @@ export const SideBar = () => {
   }, [isLogoutUser]);
   return (
     <AsideStyled>
-      <Button onClick={() => logoutUser(setIsLogoutUser)}>wyloguj się</Button>
       <ListStyled>
+        <LogoutButtonStyled onClick={() => logoutUser(setIsLogoutUser)}>
+          wyloguj się
+        </LogoutButtonStyled>
         {dataCategory &&
           dataCategory.map((category) => (
             <ItemStyled key={category.id}>
@@ -57,7 +59,16 @@ const ListStyled = styled.ul`
   list-style: none;
 `;
 const ItemStyled = styled.li`
-  &:not(:first-of-type) {
-    margin-top: 10px;
+  // &:not(:first-of-type) {
+  margin-top: 10px;
+  // }
+`;
+
+const LogoutButtonStyled = styled(Button)`
+  width: 100%;
+  background-color: #ff5252;
+  color: white;
+  &:hover {
+    background-color: #d32f2f;
   }
 `;

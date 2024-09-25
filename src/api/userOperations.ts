@@ -68,8 +68,22 @@ export const logoutUser = async (setIsLogout: (n: boolean) => void) => {
 const checkForUser = () => {
   return new Promise((_, reject) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+
       unsubscribe()
     }, reject);
   });
 };
 checkForUser()
+
+export const getCurrentUserUid = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        resolve(user.uid); // Resolve the promise with user.uid
+      } else {
+        resolve(null); // Resolve with null if there's no user
+      }
+      unsubscribe(); // Unsubscribe from the listener
+    }, reject);
+  });
+};

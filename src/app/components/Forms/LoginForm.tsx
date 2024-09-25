@@ -17,12 +17,7 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
     handleSubmit,
     control,
     formState: { isValid },
-  } = useForm<IInputs>({
-    defaultValues: {
-      email: 'mr.volodymyr.marchuk@gmail.com',
-      password: 'Vova18021987',
-    },
-  });
+  } = useForm<IInputs>();
 
   const regex = /^[0-9a-zA-Z!@#$%^&*()-_+=,.<>:?/|[\]{}"'~`]*$/;
 

@@ -7,7 +7,8 @@ import { useSearchParams } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { addNewItem, EditItemById, fetchItems } from '@/api/firebaseFunctions';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-
+import { theme } from '@/theme';
+import styled from '@emotion/styled';
 interface ICreateServiceForm {
   handleCloseModal: () => void;
   editServiceId: string | null;
@@ -64,15 +65,15 @@ export const CreateServiceForm = ({
         control={control}
         rules={{ required: true }}
         render={() => (
-          <Box>
+          <BoxStyled>
             <InputLabel>Nazwa usługi</InputLabel>
-            <TextField
+            <TextFieldStyled
               type="search"
               variant="outlined"
               placeholder="Wprowadz nazwę usługi"
               {...register('name')}
             />
-          </Box>
+          </BoxStyled>
         )}
       />
       <Controller
@@ -80,15 +81,15 @@ export const CreateServiceForm = ({
         control={control}
         rules={{ required: true }}
         render={() => (
-          <Box>
+          <BoxStyled>
             <InputLabel>Cena usługi</InputLabel>
-            <TextField
+            <TextFieldStyled
               type="search"
               variant="outlined"
               placeholder="Wprowadz cene usługi"
               {...register('price')}
             />
-          </Box>
+          </BoxStyled>
         )}
       />
       <Controller
@@ -96,18 +97,36 @@ export const CreateServiceForm = ({
         control={control}
         rules={{ required: true }}
         render={() => (
-          <Box>
+          <BoxStyled>
             <InputLabel>Czas wykonania usługi</InputLabel>
-            <TextField
+            <TextFieldStyled
               type="search"
               variant="outlined"
               placeholder="Wprowadz czas wykonania usługi"
               {...register('duration')}
             />
-          </Box>
+          </BoxStyled>
         )}
       />
-      <Button type="submit">Dodaj usługe</Button>
+      <ButtonStyled type="submit">Dodaj usługe</ButtonStyled>
     </form>
   );
 };
+const BoxStyled = styled(Box)`
+  margin-top: 10px;
+`;
+const TextFieldStyled = styled(TextField)`
+  width: 100%;
+`;
+const ButtonStyled = styled(Button)`
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 10px;
+  background-color: ${theme.accentColor};
+  color: white;
+  &:hover {
+    background-color: green;
+  }
+`;

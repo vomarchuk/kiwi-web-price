@@ -13,12 +13,10 @@ import { CategoryType, ServiceType } from '@/app/helpers/schemas';
 import { Box, Container, IconButton, Menu, MenuItem } from '@mui/material';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { ServicesModal } from '@/app/components/Modals/ServicesModal';
 import { AddIconButton } from '@/app/components/Buttons/AddIconButton';
 import { theme } from '@/theme';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import EditIcon from '@mui/icons-material/Edit';
 
 const ServicePage = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
