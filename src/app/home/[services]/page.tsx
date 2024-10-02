@@ -16,7 +16,8 @@ import React, { useState } from 'react';
 import { ServicesModal } from '@/app/components/Modals/ServicesModal';
 import { AddIconButton } from '@/app/components/Buttons/AddIconButton';
 import { theme } from '@/theme';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 const ServicePage = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -63,6 +64,8 @@ const ServicePage = () => {
     handleClose();
   };
   const editItemById = (serviceId: string) => {
+    console.log(serviceId);
+
     setAnchorEl(null);
     setEditItemId(serviceId);
     handleClickOpen();
@@ -94,51 +97,47 @@ const ServicePage = () => {
           </TableHead>
           <TableBody>
             {currentServiceCollection &&
-              currentServiceCollection.map((service) => (
-                <TableRow key={service.id}>
-                  <TableCell>{service.name}</TableCell>
-                  <TableCell>{service.price} zł</TableCell>
-                  <TableCell>{service.duration} min</TableCell>
-                  <TableCell>
-                    <>
+              currentServiceCollection.map((service) => {
+                return (
+                  <TableRow key={service.id}>
+                    <TableCell>{service.name}</TableCell>
+                    <TableCell>{service.price} zł</TableCell>
+                    <TableCell>{service.duration} min</TableCell>
+                    <TableCell sx={{ display: 'flex' }}>
                       <IconButton
-                        aria-label="more"
-                        id="long-button"
-                        aria-controls={
-                          openShowVariants ? 'long-menu' : undefined
-                        }
-                        aria-expanded={openShowVariants ? 'true' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClick}
+                        aria-label="edit service"
+                        sx={{
+                          '&:hover': {
+                            '& > svg': {
+                              fill: 'green',
+                            },
+                          },
+                        }}
+                        onClick={() => editItemById(service.id)}
                       >
-                        <ModeVariantIconStyled />
+                        <EditIcon
+                          sx={{
+                            fill: `${theme.accentColor}`,
+                          }}
+                        />
                       </IconButton>
-                      <Menu
-                        id="menu-appBar"
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
+                      <IconButton
+                        sx={{
+                          '&:hover': {
+                            '& > svg': {
+                              fill: 'tomato',
+                            },
+                          },
                         }}
-                        keepMounted
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        open={openShowVariants}
-                        onClose={handleCloses}
+                        aria-label="remove service"
+                        onClick={() => removeItemById(service.id)}
                       >
-                        <MenuItem onClick={() => removeItemById(service.id)}>
-                          Usuń
-                        </MenuItem>
-                        <MenuItem onClick={() => editItemById(service.id)}>
-                          edytuj
-                        </MenuItem>
-                      </Menu>
-                    </>
-                  </TableCell>
-                </TableRow>
-              ))}
+                        <DeleteForeverIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </TableContainer>
@@ -155,14 +154,6 @@ const HeaderBoxStyled = styled(Box)`
 `;
 const HeaderTitleStyled = styled.h1`
   margin-right: 20px;
-`;
-
-const ModeVariantIconStyled = styled(MoreVertIcon)`
-  fill: ${theme.accentColor};
-  cursor: pointer;
-  &:hover {
-    fill: red;
-  }
 `;
 
 export default ServicePage;
