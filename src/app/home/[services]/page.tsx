@@ -64,8 +64,6 @@ const ServicePage = () => {
     handleClose();
   };
   const editItemById = (serviceId: string) => {
-    console.log(serviceId);
-
     setAnchorEl(null);
     setEditItemId(serviceId);
     handleClickOpen();

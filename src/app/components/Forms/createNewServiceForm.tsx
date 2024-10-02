@@ -1,5 +1,5 @@
 'use client';
-import { ServiceType } from '@/app/helpers/schemas';
+import { CategoryType, ServiceType } from '@/app/helpers/schemas';
 import { Box, Button, InputLabel, TextField } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -24,11 +24,17 @@ export const CreateServiceForm = ({
       price: '',
       duration: '',
       categoryId: '',
+      categoryName: '',
     },
   });
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const categoryId = searchParams.get('id');
+
+  const { data: dataCategories } = useQuery<CategoryType[]>({
+    queryKey: ['categories'],
+    queryFn: async () => await fetchItems('categories'),
+  });
 
   const { data: dataServices } = useQuery<ServiceType[]>({
     queryKey: ['services'],
@@ -36,10 +42,14 @@ export const CreateServiceForm = ({
   });
 
   const onSubmit = async (data: ServiceType) => {
+    const currentCategory = dataCategories?.find(
+      (category) => category.id === categoryId,
+    );
     const newService: ServiceType = {
       ...data,
       id: editServiceId || uuidv4(),
       categoryId: categoryId || '',
+      categoryName: currentCategory?.name || '',
     };
     if (editServiceId) {
       await EditItemById(newService, 'services');

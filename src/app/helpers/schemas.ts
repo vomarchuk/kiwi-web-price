@@ -18,6 +18,7 @@ export const serviceSchema = z.object({
   name: z.string(),
   price: z.string(),
   categoryId: z.string(),
+  categoryName: z.string(),
   duration: z.string(),
 })
 export const subMenuSchema = z.object({

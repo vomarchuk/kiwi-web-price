@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, DocumentData, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore"
+import { collection, deleteDoc, doc, DocumentData, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore"
 import { firestore } from "./firebase"
 
 export const fetchItems = async<T>(firestoreCollections: string) => {
